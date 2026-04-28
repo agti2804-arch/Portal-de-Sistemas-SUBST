@@ -1,0 +1,823 @@
+
+html_content = '''<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Sistemas - Prefeitura de São Paulo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #1e3c72 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.85);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .network-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 30px;
+            margin-top: 15px;
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .network-dot {
+            width: 10px;
+            height: 10px;
+            background: #48bb78;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #48bb78;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.2); }
+        }
+
+        .systems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            justify-content: center;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .system-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 220px;
+        }
+
+        .system-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .system-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .card-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .system-card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            color: #2d3748;
+            font-weight: 700;
+            margin-bottom: 3px;
+            line-height: 1.2;
+        }
+
+        .card-subtitle {
+            color: #718096;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .card-description {
+            color: #4a5568;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            flex-grow: 1;
+        }
+
+        .access-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .access-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+
+        .access-btn::after {
+            content: '→';
+            transition: transform 0.3s ease;
+        }
+
+        .access-btn:hover::after {
+            transform: translateX(4px);
+        }
+
+        /* Cores específicas por categoria/sistema */
+        .licenciamento .card-icon, .licenciamento .access-btn {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+        }
+        .licenciamento::before { background: linear-gradient(90deg, #11998e, #38ef7d); }
+
+        .fiscalizacao .card-icon, .fiscalizacao .access-btn {
+            background: linear-gradient(135deg, #fc4a1a, #f7b733);
+            color: white;
+        }
+        .fiscalizacao::before { background: linear-gradient(90deg, #fc4a1a, #f7b733); }
+
+        .administrativo .card-icon, .administrativo .access-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        .administrativo::before { background: linear-gradient(90deg, #667eea, #764ba2); }
+
+        .compras .card-icon, .compras .access-btn {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+        }
+        .compras::before { background: linear-gradient(90deg, #f093fb, #f5576c); }
+
+        .transparencia .card-icon, .transparencia .access-btn {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+        }
+        .transparencia::before { background: linear-gradient(90deg, #4facfe, #00f2fe); }
+
+        .zeladoria .card-icon, .zeladoria .access-btn {
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+            color: white;
+        }
+        .zeladoria::before { background: linear-gradient(90deg, #43e97b, #38f9d7); }
+
+        .geoprocessamento .card-icon, .geoprocessamento .access-btn {
+            background: linear-gradient(135deg, #fa709a, #fee140);
+            color: white;
+        }
+        .geoprocessamento::before { background: linear-gradient(90deg, #fa709a, #fee140); }
+
+        .diario .card-icon, .diario .access-btn {
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            color: white;
+        }
+        .diario::before { background: linear-gradient(90deg, #ff6b6b, #feca57); }
+
+        .fazenda .card-icon, .fazenda .access-btn {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+        }
+        .fazenda::before { background: linear-gradient(90deg, #00b894, #00cec9); }
+
+        .cedi .card-icon, .cedi .access-btn {
+            background: linear-gradient(135deg, #8e44ad, #e056fd);
+            color: white;
+        }
+        .cedi::before { background: linear-gradient(90deg, #8e44ad, #e056fd); }
+
+        .status-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            background: #48bb78;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .footer {
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            margin-top: 60px;
+            padding: 30px 20px;
+            animation: fadeIn 1s ease-out 0.6s backwards;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-main {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .footer-credit {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.9);
+            font-weight: 500;
+            background: rgba(255,255,255,0.1);
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            .systems-grid { 
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .system-card {
+                min-height: 200px;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .systems-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .search-box {
+            max-width: 500px;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 25px;
+            border-radius: 30px;
+            border: none;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .search-input:focus {
+            background: rgba(255,255,255,0.25);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo-section">
+                <div class="logo-icon">🏛️</div>
+                <div>
+                    <h1>Portal de Sistemas</h1>
+                    <p class="subtitle">SUB-ST/GAB/AGTI</p>
+                </div>
+            </div>
+            <div class="network-indicator">
+                <span class="network-dot"></span>
+                <span>Rede Interna Conectada</span>
+            </div>
+        </header>
+
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="🔍 Buscar sistema..." id="searchInput">
+        </div>
+
+        <div class="systems-grid">
+            <!-- Licenciamento e Obras -->
+            <article class="system-card licenciamento" data-name="simproc" onclick="window.open('https://simproc.prefeitura.sp.gov.br/Forms/login.aspx', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">📄</div>
+                    <div>
+                        <h3 class="card-title">SIMPROC</h3>
+                        <p class="card-subtitle">Sistema de Processos</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Sistema de Processos Administrativos. Acompanhamento e gestão de processos da administração pública municipal.
+                </p>
+                <a href="https://simproc.prefeitura.sp.gov.br/Forms/login.aspx" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+            <article class="system-card licenciamento" data-name="portal licenciamento" onclick="window.open('https://www.portaldolicenciamentosp.com.br/login', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">🏗️</div>
+                    <div>
+                        <h3 class="card-title">AprovaDigital</h3>
+                        <p class="card-subtitle">Prefeitura de São Paulo</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Portal unificado para licenciamentos de obras e edificações na cidade de São Paulo.
+                </p>
+                <a href="https://www.portaldolicenciamentosp.com.br/login" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+            <article class="system-card licenciamento" data-name="arquip" onclick="window.open('https://arquip.prefeitura.sp.gov.br/', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">📐</div>
+                    <div>
+                        <h3 class="card-title">ARQUIP</h3>
+                        <p class="card-subtitle">Arquitetura e Urbanismo</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Sistema de consulta e gestão de projetos arquitetônicos e documentação técnica.
+                </p>
+                <a href="https://arquip.prefeitura.sp.gov.br/" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+            <!-- Fiscalização e Gestão -->
+            <article class="system-card fiscalizacao" data-name="sgf" onclick="window.open('http://sgf.prodam/', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">⚖️</div>
+                    <div>
+                        <h3 class="card-title">SGF</h3>
+                        <p class="card-subtitle">Sistema de Gestão Fiscal</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Sistema de Gestão Fiscal da Prodam. Controle e acompanhamento de atividades fiscais.
+                </p>
+                <a href="http://sgf.prodam/" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+            <article class="system-card fiscalizacao" data-name="sigrc" onclick="window.open('https://sigrc.prefeitura.sp.gov.br/auth-web/login', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">📊</div>
+                    <div>
+                        <h3 class="card-title">SIGRC</h3>
+                        <p class="card-subtitle">Gestão e Relacionamento</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Sistema integrado de gestão e relacionamento com o cidadão para atendimento e demandas.
+                </p>
+                <a href="https://sigrc.prefeitura.sp.gov.br/auth-web/login" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+            <article class="system-card fiscalizacao" data-name="smgi" onclick="window.open('https://smgi.prefeitura.sp.gov.br/conta/login', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">🎮</div>
+                    <div>
+                        <h3 class="card-title">SGZ</h3>
+                        <p class="card-subtitle">Sistema de Gestão</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Sistema de Metas e Gestão Interna da Prefeitura de São Paulo.
+                </p>
+                <a href="https://smgi.prefeitura.sp.gov.br/conta/login" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+            <!-- Administração e Pessoal -->
+            <article class="system-card administrativo" data-name="sip sei" onclick="window.open('https://sip.prefeitura.sp.gov.br/sip/modulos/pmsp/login/login.php?sigla_orgao_sistema=PMSP&sigla_sistema=SEI&infra_url=L3NlaS8=', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">📑</div>
+                    <div>
+                        <h3 class="card-title">SEI</h3>
+                        <p class="card-subtitle">Sistema Eletrônico de Informações</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Sistema Eletrônico de Informações para processos administrativos digitais e documentação.
+                </p>
+                <a href="https://sip.prefeitura.sp.gov.br/sip/modulos/pmsp/login/login.php?sigla_orgao_sistema=PMSP&sigla_sistema=SEI&infra_url=L3NlaS8=" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+            <article class="system-card administrativo" data-name="cac prodam" onclick="window.open('http://sf9433.app.prodam/intranet/forms_apresentacao/cac/frm_cac_01_login.aspx', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">🔐</div>
+                    <div>
+                        <h3 class="card-title">PATRIMONIO</h3>
+                        <p class="card-subtitle">Controle de Acesso</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Sistema de Controle de Acesso Corporativo da Prodam.
+                </p>
+                <a href="http://sf9433.app.prodam/intranet/forms_apresentacao/cac/frm_cac_01_login.aspx" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+            <article class="system-card administrativo" data-name="cac plus" onclick="window.open('https://cacplus.prodam/FormsPublic/frmLoginControleAcesso.aspx?p=120179101142064068014174089136206065254226131155057036216009172001041181061153152039230039089204251079071047087235058088120093140245105121175079245130069077246104014164065150134049070203002068144121235124247004008033079046196174013175075133090059240234051214011054020108081142074116035171196242070199020112123083134128200205207063061191', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">🔑</div>
+                    <div>
+                        <h3 class="card-title">CAC Plus</h3>
+                        <p class="card-subtitle">Controle de Acesso Avançado</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Sistema avançado de controle de acesso e permissões corporativas.
+                </p>
+                <a href="https://cacplus.prodam/FormsPublic/frmLoginControleAcesso.aspx?p=120179101142064068014174089136206065254226131155057036216009172001041181061153152039230039089204251079071047087235058088120093140245105121175079245130069077246104014164065150134049070203002068144121235124247004008033079046196174013175075133090059240234051214011054020108081142074116035171196242070199020112123083134128200205207063061191" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+            <article class="system-card administrativo" data-name="nsof" onclick="window.open('https://nsof.prodam/#/SSG001S', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">📋</div>
+                    <div>
+                        <h3 class="card-title">SOF</h3>
+                        <p class="card-subtitle">Novo Sistema de Ocorrências</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Sistema de registro e acompanhamento de ocorrências administrativas.
+                </p>
+                <a href="https://nsof.prodam/#/SSG001S" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+            <!-- Compras e Licitações -->
+            <article class="system-card compras" data-name="comprasnet" onclick="window.open('https://www.comprasnet.gov.br/seguro/loginPortal.asp', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">🛍️</div>
+                    <div>
+                        <h3 class="card-title">ComprasGov</h3>
+                        <p class="card-subtitle">Governo Federal</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Portal federal para licitações, compras e contratações públicas.
+                </p>
+                <a href="https://www.comprasnet.gov.br/seguro/loginPortal.asp" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+            <article class="system-card compras" data-name="preco publico dea" onclick="window.open('http://dea.prodam/precopublico/formsintranet/f0004_pag_unidades.aspx', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">💰</div>
+                    <div>
+                        <h3 class="card-title">DAMSP</h3>
+                        <p class="card-subtitle">DEA - Prodam</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Sistema de consulta de preços públicos e tabelas de referência.
+                </p>
+                <a href="http://dea.prodam/precopublico/formsintranet/f0004_pag_unidades.aspx" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+            <!-- Transparência e Cidadania -->
+            <article class="system-card transparencia" data-name="esic" onclick="window.open('https://esic.prefeitura.sp.gov.br/Account/Login.aspx', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">📢</div>
+                    <div>
+                        <h3 class="card-title">e-SIC</h3>
+                        <p class="card-subtitle">Serviço de Informação ao Cidadão</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Sistema eletrônico para pedidos de acesso à informação (Lei de Acesso à Informação).
+                </p>
+                <a href="https://esic.prefeitura.sp.gov.br/Account/Login.aspx" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+            <article class="system-card transparencia" data-name="limpe brass" onclick="window.open('https://limpebrassp.com.br/pesquisa-servicos/', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">🧹</div>
+                    <div>
+                        <h3 class="card-title">LimpeBraS SP</h3>
+                        <p class="card-subtitle">Serviços de Limpeza Urbana</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Sistema de pesquisa e acompanhamento de serviços de limpeza urbana da cidade.
+                </p>
+                <a href="https://limpebrassp.com.br/pesquisa-servicos/" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+            <!-- Zeladoria e Serviços Urbanos -->
+            <article class="system-card zeladoria" data-name="painel zeladoria" onclick="window.open('https://painelzeladoria.prefeitura.sp.gov.br/', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">🗑️</div>
+                    <div>
+                        <h3 class="card-title">Painel da Zeladoria</h3>
+                        <p class="card-subtitle">Gestão de Serviços Urbanos</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Painel de controle e acompanhamento dos serviços de zeladoria urbana.
+                </p>
+                <a href="https://painelzeladoria.prefeitura.sp.gov.br/" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+            <!-- Geoprocessamento -->
+            <article class="system-card geoprocessamento" data-name="geosampa" onclick="window.open('http://geosampa.prodam/PaginasPublicas/_SBC.aspx', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">🌐</div>
+                    <div>
+                        <h3 class="card-title">GeoSampa</h3>
+                        <p class="card-subtitle">Sistema de Informações Geográficas</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Sistema de informações geográficas do município de São Paulo. Mapas, camadas e dados espaciais.
+                </p>
+                <a href="http://geosampa.prodam/PaginasPublicas/_SBC.aspx" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+            <!-- Novo GeoSampa -->
+            <article class="system-card geoprocessamento" data-name="novo geosampa" onclick="window.open('https://mapas.geosampa2.prodam/', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">🗺️</div>
+                    <div>
+                        <h2 class="card-title">Novo GeoSampa</h2>
+                        <p class="card-subtitle">Mapas Interativos - Nova Versão</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Nova plataforma de mapas interativos do município de São Paulo. Consulte dados geoespaciais atualizados.
+                </p>
+                <a href="https://mapas.geosampa2.prodam/" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+            <!-- Diário Oficial -->
+            <article class="system-card diario" data-name="diario oficial" onclick="window.open('https://diariooficial.prefeitura.sp.gov.br/md_epubli_controlador.php?acao=inicio', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">📰</div>
+                    <div>
+                        <h3 class="card-title">Diário Oficial</h3>
+                        <p class="card-subtitle">Publicações Municipais</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Acesse o Diário Oficial do Município de São Paulo. Consulte publicações, decretos e atos oficiais.
+                </p>
+                <a href="https://diariooficial.prefeitura.sp.gov.br/md_epubli_controlador.php?acao=inicio" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+            <!-- Nota Fiscal Paulista -->
+            <article class="system-card fazenda" data-name="nota fiscal paulista" onclick="window.open('https://portal.fazenda.sp.gov.br/servicos/nfp', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">🧾</div>
+                    <div>
+                        <h3 class="card-title">Nota Fiscal Paulista</h3>
+                        <p class="card-subtitle">Secretaria da Fazenda</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Portal da Nota Fiscal Paulista. Consulte créditos, cadastros e informações sobre o programa de incentivo fiscal.
+                </p>
+                <a href="https://portal.fazenda.sp.gov.br/servicos/nfp" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+            <!-- Nota do Milhão / SF -->
+            <article class="system-card fazenda" data-name="nota do milhao sf" onclick="window.open('https://notadomilhao.sf.prefeitura.sp.gov.br/', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">💵</div>
+                    <div>
+                        <h2 class="card-title">Nota Fiscal / SF</h2>
+                        <p class="card-subtitle">Nota do Milhão - Subprefeitura</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Programa Nota do Milhão da Subprefeitura. Consulte créditos e informações do programa de incentivo fiscal local.
+                </p>
+                <a href="https://notadomilhao.sf.prefeitura.sp.gov.br/" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+            <!-- CEDI -->
+            <article class="system-card cedi" data-name="cedi" onclick="window.open('https://cediconshistorico.prefeitura.sp.gov.br/forms/consultarhistorico.aspx', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">🏛️</div>
+                    <div>
+                        <h2 class="card-title">CEDI</h2>
+                        <p class="card-subtitle">Cadastro de Imóveis Históricos</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Consulte tombamentos, preservação e dados cadastrais de imóveis históricos de São Paulo.
+                </p>
+                <a href="https://cediconshistorico.prefeitura.sp.gov.br/forms/consultarhistorico.aspx" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+        </div>
+
+        <footer class="footer">
+            <p class="footer-main">© 2026 Prefeitura Municipal de São Paulo - PRODAM</p>
+            <p style="font-size: 0.8rem; opacity: 0.8;">Acesso restrito à rede interna</p>
+            <p class="footer-credit">✨ Elaborado por AGTI</p>
+        </footer>
+    </div>
+
+    <script>
+        // Animações e interações
+        document.addEventListener('DOMContentLoaded', function() {
+            // Busca de sistemas
+            const searchInput = document.getElementById('searchInput');
+            const cards = document.querySelectorAll('.system-card');
+
+            searchInput.addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                
+                cards.forEach(card => {
+                    const name = card.getAttribute('data-name');
+                    const title = card.querySelector('.card-title').textContent.toLowerCase();
+                    const description = card.querySelector('.card-description').textContent.toLowerCase();
+                    
+                    if (name.includes(searchTerm) || title.includes(searchTerm) || description.includes(searchTerm)) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            });
+
+            // Efeito de hover nos cards
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.zIndex = '10';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.zIndex = '1';
+                });
+            });
+
+            console.log('Portal de Sistemas carregado com sucesso');
+            console.log('Total de sistemas:', cards.length);
+        });
+
+        // Prevenir duplo redirecionamento nos botões
+        document.querySelectorAll('.access-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const url = this.getAttribute('href');
+                window.open(url, '_blank');
+            });
+        });
+    </script>
+</body>
+</html>'''
+
+with open('/mnt/agents/output/Portal_Santana.html', 'w', encoding='utf-8') as f:
+    f.write(html_content)
+
+print("Arquivo salvo com sucesso!")
+print("Total de caracteres:", len(html_content))
