@@ -294,6 +294,12 @@ html_content = '''<!DOCTYPE html>
         }
         .servidor::before { background: linear-gradient(90deg, #2c3e50, #4ca1af); }
 
+         .Nota Fisc/SF .card-icon, .servidor .access-btn {
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            color: white;
+        }
+        .Nota Fisc/SF::before { background: linear-gradient(90deg, #2c3e50, #4ca1af); }
+
         .status-badge {
             position: absolute;
             top: 15px;
@@ -668,19 +674,19 @@ html_content = '''<!DOCTYPE html>
             </article>
 
             <!-- Geoprocessamento -->
-            <article class="system-card geoprocessamento" data-name="geosampa" onclick="window.open('http://geosampa.prodam/PaginasPublicas/_SBC.aspx', '_blank')">
+            <article class="system-card geoprocessamento" data-name="geosampa" onclick="window.open('https://mapas.geosampa2.prodam/', '_blank')">
                 <span class="status-badge">Ativo</span>
                 <div class="card-header">
                     <div class="card-icon">🌐</div>
                     <div>
-                        <h3 class="card-title">GeoSampa</h3>
+                        <h3 class="card-title">NovoGeoSampa</h3>
                         <p class="card-subtitle">Sistema de Informações Geográficas</p>
                     </div>
                 </div>
                 <p class="card-description">
                     Sistema de informações geográficas do município de São Paulo. Mapas, camadas e dados espaciais.
                 </p>
-                <a href="http://geosampa.prodam/PaginasPublicas/_SBC.aspx" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+                <a href="https://mapas.geosampa2.prodam/" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
             </article>
 
             <!-- Diário Oficial -->
@@ -745,6 +751,22 @@ html_content = '''<!DOCTYPE html>
                     Consulte tombamentos, preservação e dados cadastrais de imóveis históricos de São Paulo.
                 </p>
                 <a href="https://cediconshistorico.prefeitura.sp.gov.br/forms/consultarhistorico.aspx" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+            </article>
+
+                <!-- Nota Fisc/SF-->
+            <article class="system-card cedi" data-name="Nota Fisc/SF" onclick="window.open('https://nfe.prefeitura.sp.gov.br/login.aspx', '_blank')">
+                <span class="status-badge">Ativo</span>
+                <div class="card-header">
+                    <div class="card-icon">🧾</div>
+                    <div>
+                        <h3 class="card-title">Nota Fisc/SF</h3>
+                        <p class="card-subtitle">Cadastro de Imóveis Históricos</p>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Consulte tombamentos, preservação e dados cadastrais de imóveis históricos de São Paulo.
+                </p>
+                <a href="https://nfe.prefeitura.sp.gov.br/login.aspx" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
             </article>
 
         </div>
