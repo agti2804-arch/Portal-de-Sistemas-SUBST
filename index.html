@@ -1,4 +1,7 @@
 
+# Vou criar o arquivo HTML com o card "Servidor" adicionado
+# O usuário quer o card Servidor de volta (que existia antes sem <h2>)
+
 html_content = '''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -286,6 +289,12 @@ html_content = '''<!DOCTYPE html>
             color: white;
         }
         .cedi::before { background: linear-gradient(90deg, #8e44ad, #e056fd); }
+
+        .servidor .card-icon, .servidor .access-btn {
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            color: white;
+        }
+        .servidor::before { background: linear-gradient(90deg, #2c3e50, #4ca1af); }
 
         .status-badge {
             position: absolute;
@@ -676,22 +685,6 @@ html_content = '''<!DOCTYPE html>
                 <a href="http://geosampa.prodam/PaginasPublicas/_SBC.aspx" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
             </article>
 
-            <!-- Novo GeoSampa -->
-            <article class="system-card geoprocessamento" data-name="novo geosampa" onclick="window.open('https://mapas.geosampa2.prodam/', '_blank')">
-                <span class="status-badge">Ativo</span>
-                <div class="card-header">
-                    <div class="card-icon">🗺️</div>
-                    <div>
-                        <h2 class="card-title">Novo GeoSampa</h2>
-                        <p class="card-subtitle">Mapas Interativos - Nova Versão</p>
-                    </div>
-                </div>
-                <p class="card-description">
-                    Nova plataforma de mapas interativos do município de São Paulo. Consulte dados geoespaciais atualizados.
-                </p>
-                <a href="https://mapas.geosampa2.prodam/" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
-            </article>
-
             <!-- Diário Oficial -->
             <article class="system-card diario" data-name="diario oficial" onclick="window.open('https://diariooficial.prefeitura.sp.gov.br/md_epubli_controlador.php?acao=inicio', '_blank')">
                 <span class="status-badge">Ativo</span>
@@ -724,20 +717,20 @@ html_content = '''<!DOCTYPE html>
                 <a href="https://portal.fazenda.sp.gov.br/servicos/nfp" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
             </article>
 
-            <!-- Nota do Milhão / SF -->
-            <article class="system-card fazenda" data-name="nota do milhao sf" onclick="window.open('https://notadomilhao.sf.prefeitura.sp.gov.br/', '_blank')">
+            <!-- Servidor -->
+            <article class="system-card servidor" data-name="servidor" onclick="window.open('https://www.prefeitura.sp.gov.br/cidade/secretarias/servicos/servidor/', '_blank')">
                 <span class="status-badge">Ativo</span>
                 <div class="card-header">
-                    <div class="card-icon">💵</div>
+                    <div class="card-icon">👤</div>
                     <div>
-                        <h2 class="card-title">Nota Fiscal / SF</h2>
-                        <p class="card-subtitle">Nota do Milhão - Subprefeitura</p>
+                        <h3 class="card-title">Servidor</h3>
+                        <p class="card-subtitle">Portal do Servidor</p>
                     </div>
                 </div>
                 <p class="card-description">
-                    Programa Nota do Milhão da Subprefeitura. Consulte créditos e informações do programa de incentivo fiscal local.
+                    Portal do Servidor Público Municipal. Acesse informações, serviços e recursos exclusivos para servidores.
                 </p>
-                <a href="https://notadomilhao.sf.prefeitura.sp.gov.br/" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
+                <a href="https://www.prefeitura.sp.gov.br/cidade/secretarias/servicos/servidor/" target="_blank" class="access-btn" onclick="event.stopPropagation()">Acessar Sistema</a>
             </article>
 
             <!-- CEDI -->
@@ -746,7 +739,7 @@ html_content = '''<!DOCTYPE html>
                 <div class="card-header">
                     <div class="card-icon">🏛️</div>
                     <div>
-                        <h2 class="card-title">CEDI</h2>
+                        <h3 class="card-title">CEDI</h3>
                         <p class="card-subtitle">Cadastro de Imóveis Históricos</p>
                     </div>
                 </div>
@@ -816,8 +809,9 @@ html_content = '''<!DOCTYPE html>
 </body>
 </html>'''
 
+# Salvar o arquivo
 with open('/mnt/agents/output/Portal_Santana.html', 'w', encoding='utf-8') as f:
     f.write(html_content)
 
 print("Arquivo salvo com sucesso!")
-print("Total de caracteres:", len(html_content))
+
